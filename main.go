@@ -40,6 +40,8 @@ func sidebar(ctx *gin.Context) {
 	ctx.HTML(http.StatusOK, "sidebar.tmpl", sidebar)
 }
 
+
+
 func index(ctx *gin.Context) {
 	bread := []string { "Account", "Checking", "Transactions" }
 	sidebar := viewmodel.SidebarVM {
