@@ -32,6 +32,10 @@ func index(ctx *gin.Context) {
 				},
 			},
 		},
+		"Table": gin.H{
+			"Title": "Transactions",
+			"Subtitle": "23 total",
+		},
 	})
 }
 

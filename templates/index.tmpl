@@ -5,8 +5,14 @@
 	</head>
 
 	<body>
-		{{ template "breadcrumbs.tmpl" . }}
-		{{ template "sidebar.tmpl" .Sidebar }}
+		<main class="flex w-full">
+			{{ template "sidebar.tmpl" .Sidebar }}
+	
+			<div class="bg-gray-900 flex-grow">
+				{{ template "transactions.tmpl" .Table }}
+			</div>
+		
+		</main>
 
 	</body>
 </html>
