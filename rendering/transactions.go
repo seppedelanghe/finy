@@ -8,8 +8,6 @@ import (
 	"finy.be/api/structs/viewmodel"
 )
 
-type H = map[any]any
-
 func TranscationsList(w http.ResponseWriter, transactions *[]structs.Transaction) error {
 	var rows []viewmodel.TableRow
 	for _, t := range *transactions {
@@ -42,9 +40,5 @@ func TransactionsModalAdd(w http.ResponseWriter) error {
 	vm := viewmodel.ModalAddTransactionVM{}
 
 	return Renderer.HTML(w, http.StatusOK, "modals/transactions/add", vm)
-}
-
-func TransactionsModalEmpty(w http.ResponseWriter, id string) error {
-	return Renderer.HTML(w, http.StatusOK, "modals/transactions/empty", H {"Id": id})
 }
 
