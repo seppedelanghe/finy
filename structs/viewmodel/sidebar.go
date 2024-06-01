@@ -3,6 +3,7 @@ package viewmodel
 type SidebarVM struct {
 	Title string
 	Selected int
+	SelectedMenu int
 	Pages []SidebarPageVM
 	Menus []SidebarMenuVM
 }

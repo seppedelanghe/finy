@@ -7,10 +7,10 @@
 
 	<body onload="openWS">
 		<main class="flex w-full">
-			{{ template "sidebar.tmpl" .Sidebar }}
+			{{ template "sidebar" .Sidebar }}
 	
 			<div class="bg-gray-900 flex-grow">
-				{{ template "transactions.tmpl" .Transactions }}
+				{{ template "transactions" .Transactions }}
 			</div>
 
 		</main>

@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 )
 
@@ -32,8 +31,8 @@ func keepAlive(conn *websocket.Conn, interval time.Duration) {
 	}
 }
 
-func HandleWebSocket(c *gin.Context) {
-	conn, err := upgrader.Upgrade(c.Writer, c.Request, nil)
+func HandleWebSocket(w http.ResponseWriter, r *http.Request) {
+	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Println("Upgrade error:", err)
 		return

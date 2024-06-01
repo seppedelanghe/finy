@@ -3,66 +3,64 @@ package main
 import (
 	"net/http"
 	"strconv"
-	"time"
 
-	"finy.be/api/structs/viewmodel"
 	"finy.be/api/ws"
-	"github.com/gin-contrib/cors"
-	"github.com/gin-gonic/gin"
+	"finy.be/api/rendering"
+	"finy.be/api/structs/viewmodel"
 )
+
+type H = map[any]any
 
 
 func init() {
 }
 
-func sidebar(ctx *gin.Context) {
-	selected := ctx.Param("index")
+
+func sidebar(w http.ResponseWriter, r *http.Request) {
+	selected := r.PathValue("index")
 	index, err := strconv.Atoi(selected)
 	if err != nil {
-		ctx.Status(http.StatusInternalServerError)
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 	sidebar := viewmodel.SidebarVM {
-		Title: "Accounts",
-		Selected: index,
+		Selected: 1,
+		SelectedMenu: index,
 		Pages: []viewmodel.SidebarPageVM {
-			{ Icon: "", Name: "" },
-			{ Icon: "", Name: "" },
-			{ Icon: "", Name: "" },
-			{ Icon: "", Name: "" },
+			{ Icon: "bell.svg", Name: "Notifications" },
+			{ Icon: "chart.svg", Name: "Accounts" },
+			{ Icon: "settings.svg", Name: "Settings" },
 		},
 		Menus: []viewmodel.SidebarMenuVM {
-			{ Title: "Checking", Subtitle: "€ 1114.13", Icon: "" },
-			{ Title: "Savings", Subtitle: "€ 9876.10", Icon: "" },
+			{ Title: "Checking", Subtitle: "1114.13", Icon: "" },
+			{ Title: "Savings", Subtitle: "9876.10", Icon: "" },
 		},
 	}
 
-	ctx.HTML(http.StatusOK, "sidebar.tmpl", sidebar)
+	rendering.Renderer.HTML(w, http.StatusOK, "sidebar", sidebar)
 }
 
 
-
-func index(ctx *gin.Context) {
+func index(w http.ResponseWriter, r *http.Request) {
 	bread := []string { "Account", "Checking", "Transactions" }
 	sidebar := viewmodel.SidebarVM {
-		Title: "Accounts",
-		Selected: 0,
+		Selected: 1,
+		SelectedMenu: 0,
 		Pages: []viewmodel.SidebarPageVM {
-			{ Icon: "", Name: "" },
-			{ Icon: "", Name: "" },
-			{ Icon: "", Name: "" },
-			{ Icon: "", Name: "" },
+			{ Icon: "bell.svg", Name: "Notifications" },
+			{ Icon: "chart.svg", Name: "Accounts" },
+			{ Icon: "settings.svg", Name: "Settings" },
 		},
 		Menus: []viewmodel.SidebarMenuVM {
-			{ Title: "Checking", Subtitle: "€ 1114.13", Icon: "" },
-			{ Title: "Savings", Subtitle: "€ 9876.10", Icon: "" },
+			{ Title: "Checking", Subtitle: "1114.13", Icon: "" },
+			{ Title: "Savings", Subtitle: "9876.10", Icon: "" },
 		},
 	}
 
-	ctx.HTML(http.StatusOK, "index.tmpl", gin.H{
+	data := H {
 		"Breadcrumbs": bread,
 		"Sidebar": sidebar,
-		"Transactions": gin.H {
+		"Transactions": H {
 			"Title": "Transactions",
 			"Subtitle": "23 total",
 			"Table": viewmodel.TableVM {
@@ -74,35 +72,31 @@ func index(ctx *gin.Context) {
 				Items: []viewmodel.TableItemVM {
 					{ Value: "Food", Bold: true },
 					{ Value: "31-05-2024", Bold: false },
-					{ Value: "€ 14,15", Bold: false },
+					{ Value: "14,15", Bold: false },
 				},
 			},
 		},
-	})
+	}
+		
+	rendering.Renderer.HTML(w, http.StatusOK, "index", data)
+}
+
+func serveFiles(w http.ResponseWriter, r *http.Request) {
+    p := "." + r.URL.Path
+    http.ServeFile(w, r, p)
 }
 
 func main() {
-	router := gin.Default()
-	router.MaxMultipartMemory = 8 << 20 // 8 MB
-	router.Static("/assets", "./assets")
-	router.LoadHTMLGlob("templates/*")
+	router := http.NewServeMux()
+	
+	router.HandleFunc("GET /assets/", serveFiles)
+	router.HandleFunc("GET /", index)
+	router.HandleFunc("GET /ws", ws.HandleWebSocket)
 
-	router.Use(cors.New(cors.Config{
-	AllowOrigins:     []string{"*"},
-	AllowMethods:     []string{"PUT", "PATCH", "OPTIONS", "GET", "POST"},
-	AllowHeaders:     []string{"*"},
-	ExposeHeaders:    []string{"Content-Length"},
-	AllowCredentials: true,
-	MaxAge: 12 * time.Hour,
-	}))
-
-	// No auth
-	router.GET("/", index)
-	router.GET("/ws", ws.HandleWebSocket)
-
-	// HTMX
-	router.POST("/sidebar/menu/select/:index", sidebar)
+	router.HandleFunc("POST /sidebar/menu/select/{index}", sidebar)
 
 	// Start API
-	router.Run()
+	server := &http.Server{ Addr: "localhost:8080", Handler: router }
+	server.ListenAndServe()
 }
+
