@@ -10,7 +10,7 @@ import (
 
 func GetSidebar(w http.ResponseWriter, r *http.Request) {
 	sidebar := viewmodel.SidebarVM {
-		Selected: 0,
+		Selected: 1,
 		SelectedMenu: 0,
 		Pages: []viewmodel.SidebarPageVM {
 			{ Icon: "bell.svg", Name: "Notifications" },
