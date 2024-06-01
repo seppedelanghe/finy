@@ -1,6 +1,7 @@
 <html>
 	<head>
 		<link rel="stylesheet" href="assets/app.css">
+		<script src="https://unpkg.com/htmx.org@1.9.12/dist/htmx.js" integrity="sha384-qbtR4rS9RrUMECUWDWM2+YGgN3U4V4ZncZ0BvUcg9FGct0jqXz3PUdVpU1p0yrXS" crossorigin="anonymous"></script>
 		
 	</head>
 
@@ -9,7 +10,7 @@
 			{{ template "sidebar.tmpl" .Sidebar }}
 	
 			<div class="bg-gray-900 flex-grow">
-				{{ template "transactions.tmpl" .Table }}
+				{{ template "transactions.tmpl" .Transactions }}
 			</div>
 
 		</main>
