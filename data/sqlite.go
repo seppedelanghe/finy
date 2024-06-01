@@ -95,7 +95,7 @@ func InsertMany(db *sql.DB, transactons *[]structs.Transaction) error {
 	insertSQL := `INSERT INTO Transactions (Id, Name, Amount, Date, CreatedAt, UpdatedAt, DeletedAt) VALUES (?, ?, ?, ?, ?, ?, ?)`
     stmt, err := tx.Prepare(insertSQL)
     if err != nil {
-        
+		return err 
     }
     defer stmt.Close()
 
@@ -108,6 +108,28 @@ func InsertMany(db *sql.DB, transactons *[]structs.Transaction) error {
     }
 
     err = tx.Commit()
+	return err
+}
+
+func DeleteTransaction(db *sql.DB, id string) error {
+	tx, err := db.Begin()
+	if err != nil {
+		return err
+	}
+
+	statement := "DELETE FROM Transactions WHERE id = ?;"
+	stmt, err := tx.Prepare(statement)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	_, err = stmt.Exec(id)
+	if err != nil {
+		return err
+	}
+	
+	err = tx.Commit()
 	return err
 }
 

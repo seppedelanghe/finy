@@ -53,6 +53,7 @@ func main() {
 	compRouter.HandleFunc("GET /modal/transaction/add", controllers.AddTransaction)
 	compRouter.HandleFunc("POST /modal/transaction/add", controllers.AddTransaction)
 	compRouter.HandleFunc("GET /modal/empty/{id}", controllers.GetEmptyModal)
+	compRouter.HandleFunc("DELETE /transactions/{id}", controllers.DeleteTransaction)
 
 
 	// Main router

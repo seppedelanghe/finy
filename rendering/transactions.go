@@ -17,6 +17,7 @@ func TranscationsList(w http.ResponseWriter, transactions *[]structs.Transaction
 				{ Value: t.Date, Bold: false },
 				{ Value: fmt.Sprintf("%.2f", float32(t.Amount) / 100), Bold: false },
 			},
+			DeleteUrl: fmt.Sprintf("/comp/transactions/%s", t.Id),
 		})
 	}
 

@@ -63,3 +63,20 @@ func AddTransaction(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 	}
 }
+
+
+func DeleteTransaction(w http.ResponseWriter, r *http.Request) {
+	db, err := data.ConnectDatabase("finy")
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+
+	id := r.PathValue("id")
+	err = data.DeleteTransaction(db, id)
+	if err != nil {
+		panic(err)
+	}
+	
+	w.WriteHeader(http.StatusNoContent)
+}

@@ -11,6 +11,7 @@ type TableHeaderVM struct {
 
 type TableRow struct {
 	Data []TableDataVM
+	DeleteUrl string
 }
 
 type TableDataVM struct {
