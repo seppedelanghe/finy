@@ -4,15 +4,57 @@
 		
 	</head>
 
-	<body>
+	<body onload="openWS">
 		<main class="flex w-full">
 			{{ template "sidebar.tmpl" .Sidebar }}
 	
 			<div class="bg-gray-900 flex-grow">
 				{{ template "transactions.tmpl" .Table }}
 			</div>
-		
+
 		</main>
 
 	</body>
+
+
+	<script>
+	// This code is for auto refresh on server reload
+	
+	const openWS = () => {
+		// Create a new WebSocket connection
+		let socket = new WebSocket('http://localhost:8080/ws');
+
+		// Event listener for successful connection
+		socket.onopen = function(event) {
+			console.log('WebSocket connection established.');
+		};
+
+		// Event listener for incoming messages
+		socket.onmessage = function(event) {
+			console.log('Message received from server:', event.data);
+		};
+
+		// Event listener for connection errors
+		socket.onerror = function(error) {
+			console.error('WebSocket error:', error);
+		};
+
+		// Event listener for connection close
+		socket.onclose = function(event) {
+			console.log('WebSocket connection closed:', event);
+
+			// Refresh the window if the WebSocket connection is lost
+			if (!event.wasClean) {
+				console.log('Connection lost. Refreshing the page...');
+				setTimeout(function() {
+					window.location.reload();
+				}, 500); 
+			}
+		}
+
+		console.info("websocket loaded")
+	}
+
+	window.addEventListener('load', openWS)
+	</script>
 </html>

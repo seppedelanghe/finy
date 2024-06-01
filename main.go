@@ -4,6 +4,8 @@ import (
 	"net/http"
 	"time"
 
+	"finy.be/api/structs/viewmodel"
+	"finy.be/api/ws"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
@@ -14,24 +16,24 @@ func init() {
 
 func index(ctx *gin.Context) {
 	bread := []string { "Account", "Checking", "Transactions" }
+	sidebar := viewmodel.SidebarVM {
+		Title: "Accounts",
+		Selected: 0,
+		Pages: []viewmodel.SidebarPageVM {
+			{ Icon: "", Name: "" },
+			{ Icon: "", Name: "" },
+			{ Icon: "", Name: "" },
+			{ Icon: "", Name: "" },
+		},
+		Menus: []viewmodel.SidebarMenuVM {
+			{ Title: "Checking", Subtitle: "€ 1114.13", Icon: "" },
+			{ Title: "Savings", Subtitle: "€ 9876.10", Icon: "" },
+		},
+	}
+
 	ctx.HTML(http.StatusOK, "index.tmpl", gin.H{
 		"Breadcrumbs": bread,
-		"Sidebar": gin.H{
-			"Title": "Accounts",
-			"Selected": 0,
-			"List": []gin.H{
-				{
-					"Title": "Checking",
-					"Subtitle": "€ 1123.30",
-					"Img": "https://i.pravatar.cc/160",
-				},
-				{
-					"Title": "Savings",
-					"Subtitle": "€ 9876.10",
-					"Img": "https://i.pravatar.cc/120",
-				},
-			},
-		},
+		"Sidebar": sidebar,
 		"Table": gin.H{
 			"Title": "Transactions",
 			"Subtitle": "23 total",
@@ -56,6 +58,7 @@ func main() {
 
   // No auth
   router.GET("/", index)
+  router.GET("/ws", ws.HandleWebSocket)
 
   // Start API
   router.Run()
