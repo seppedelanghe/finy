@@ -3,12 +3,15 @@ package controllers
 import (
 	"net/http"
 	"strconv"
+	"time"
 
 	"finy.be/api/rendering"
 	"finy.be/api/structs/viewmodel"
 )
 
 func GetSidebar(w http.ResponseWriter, r *http.Request) {
+	time.Sleep(100)
+
 	sidebar := viewmodel.SidebarVM {
 		Selected: 1,
 		SelectedMenu: 0,
@@ -27,6 +30,8 @@ func GetSidebar(w http.ResponseWriter, r *http.Request) {
 }
 
 func PostSidebar(w http.ResponseWriter, r *http.Request) {
+	time.Sleep(100)
+
 	selected := r.PathValue("index")
 	index, err := strconv.Atoi(selected)
 	if err != nil {

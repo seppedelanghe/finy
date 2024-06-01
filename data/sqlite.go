@@ -28,7 +28,7 @@ func ConnectDatabase(name string) (*sql.DB, error) {
 	if err != nil {
 		return nil, err
 	}
-	db.SetMaxOpenConns(1)
+	db.SetMaxOpenConns(10)
 
 	return db, nil
 }
@@ -83,7 +83,6 @@ func SelectQuery(db *sql.DB, query string, transactions *[]structs.Transaction) 
 
 	return nil
 }
-
 
 
 

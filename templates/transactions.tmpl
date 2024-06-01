@@ -1,12 +1,12 @@
 <section class="px-4 py-4 mx-auto w-full h-full flex flex-col" id="transactions">
     <div class="flex items-center gap-x-3">
-        <h2 class="text-lg font-medium text-gray-800 dark:text-white">{{ .Title }}</h2>
+        <h2 class="text-lg font-medium">{{ .Title }}</h2>
 
-        <span class="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400">{{ .Subtitle }}</span>
+        <span class="px-3 py-1 text-xs rounded-full bg-night text-secondary">{{ .Subtitle }}</span>
     </div>
 
     <div class="mt-4 flex-grow">
-		<div class="bg-white flex flex-col h-full dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+		<div class="flex flex-col h-full relative shadow-lg sm:rounded-lg overflow-hidden bg-secondary">
 			{{ template "transaction_header" . }}
 
 			{{ template "table" .Table }}

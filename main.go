@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"finy.be/api/controllers"
-	"finy.be/api/data"
 	"finy.be/api/rendering"
 	"finy.be/api/ws"
 )
@@ -13,10 +12,10 @@ type H = map[any]any
 
 
 func init() {
-	err := data.EnsureDbExists("finy")
-	if err != nil {
-		panic(err)
-	}
+	// err := data.EnsureDbExists("finy")
+	// if err != nil {
+	// 	panic(err)
+	// }
 }
 
 
