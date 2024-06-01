@@ -2,10 +2,10 @@ package controllers
 
 import (
 	"net/http"
-	"strconv"
 
 	"finy.be/api/rendering"
 	"finy.be/api/structs"
+	"finy.be/api/utils"
 )
 
 var transactions []structs.Transaction
@@ -29,11 +29,7 @@ func AddTransaction(w http.ResponseWriter, r *http.Request) {
 		}
 		
 		transaction.Name = r.PostForm.Get("name")
-		amount, err := strconv.ParseFloat(r.PostForm.Get("amount"), 32)
-		if err != nil {
-			panic(err)
-		}
-		transaction.Amount = int(amount * 100)
+		transaction.Amount = utils.StringDecimalInt(r.PostForm.Get("amount"))
 		transaction.Date = r.PostForm.Get("date")
 
 		transactions = append(transactions, transaction)
