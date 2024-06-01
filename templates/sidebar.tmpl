@@ -18,12 +18,14 @@
         <div class="mt-8">
 			{{ range $i, $v := .Menus }}
 				{{ if eq $i $.SelectedMenu }}
-				<button class="flex items-center w-full px-5 py-2 transition-colors duration-200 dark:bg-gray-800 focus:outline-none bg-gray-100">
+				<button 
+					id="menu-{{$i}}"
+					class="flex items-center w-full px-5 py-2 transition-colors duration-200 dark:bg-gray-800 focus:outline-none bg-gray-100">
 				{{ else }}
 				<button 
 					id="menu-{{$i}}"
 					class="flex items-center w-full px-5 py-2 transition-colors duration-200 dark:hover:bg-gray-800 focus:outline-none hover:bg-gray-100"
-					hx-post="/sidebar/menu/select/{{ $i }}"
+					hx-post="/comp/sidebar/menu/select/{{ $i }}"
 					hx-trigger="click"
 					hx-swap="multi:#sidebar,#transactions"
 				>

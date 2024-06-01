@@ -2,14 +2,18 @@ package viewmodel
 
 type TableVM struct {
 	Headers []TableHeaderVM
-	Items []TableItemVM
+	Rows []TableRow
 }
 
 type TableHeaderVM struct {
 	Name string
 }
 
-type TableItemVM struct {
+type TableRow struct {
+	Data []TableDataVM
+}
+
+type TableDataVM struct {
 	Value string
 	Bold bool
 }

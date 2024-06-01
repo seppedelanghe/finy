@@ -1,16 +1,18 @@
 <html>
 	<head>
 		<link rel="stylesheet" href="assets/app.css">
-		<script src="https://unpkg.com/htmx.org@1.9.12/dist/htmx.js" integrity="sha384-qbtR4rS9RrUMECUWDWM2+YGgN3U4V4ZncZ0BvUcg9FGct0jqXz3PUdVpU1p0yrXS" crossorigin="anonymous"></script>
-		<script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/multi-swap.js"></script>
+		<script src="/assets/htmx.js" ></script>
+		<script src="/assets/multi-swap.js" ></script>
 	</head>
 
 	<body onload="openWS" hx-ext="multi-swap">
 		<main class="flex w-full">
-			{{ template "sidebar" .Sidebar }}
+			<div hx-get="/comp/sidebar" hx-trigger="load">
+				<div class="htmx-indicator text-white w-full text-center my-4">Loading sidebar...</div>
+			</div>
 	
-			<div class="bg-gray-900 flex-grow">
-				{{ template "transactions" .Transactions }}
+			<div class="bg-gray-900 flex-grow w-full" hx-get="/comp/transactions" hx-trigger="load">
+				<div class="htmx-indicator text-white w-full text-center my-4">Loading transactions...</div>
 			</div>
 
 		</main>
@@ -48,7 +50,7 @@
 				console.log('Connection lost. Refreshing the page...');
 				setTimeout(function() {
 					window.location.reload();
-				}, 1000); 
+				}, 2000); 
 			}
 		}
 
