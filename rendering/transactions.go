@@ -16,7 +16,7 @@ func TranscationsList(w http.ResponseWriter, transactions *[]structs.Transaction
 		rows = append(rows, viewmodel.TableRow{
 			Data: []viewmodel.TableDataVM {
 				{ Value: t.Name, Bold: true },
-				{ Value: "31-05-2024", Bold: false },
+				{ Value: t.Date, Bold: false },
 				{ Value: fmt.Sprintf("%.2f", float32(t.Amount) / 100), Bold: false },
 			},
 		})

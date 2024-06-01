@@ -2,15 +2,14 @@ package utils
 
 import (
 	"strconv"
-	"strings"
 )
 
 
 func StringDecimalInt(s string) int {
-	v := strings.ReplaceAll(strings.ReplaceAll(s, ".", ""), ",", "")
-	i, err := strconv.Atoi(v)
+	f, err := strconv.ParseFloat(s, 64)
 	if err != nil {
 		panic(err)
 	}
-	return i
+
+	return int(f * 100)
 }

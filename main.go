@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"finy.be/api/controllers"
+	"finy.be/api/data"
 	"finy.be/api/rendering"
 	"finy.be/api/ws"
 )
@@ -12,12 +13,27 @@ type H = map[any]any
 
 
 func init() {
+	err := data.EnsureDbExists("finy")
+	if err != nil {
+		panic(err)
+	}
 }
 
 
-
 func index(w http.ResponseWriter, r *http.Request) {
-	rendering.Renderer.HTML(w, http.StatusOK, "index", nil)
+	path := r.URL.Path
+	switch path {
+	case "/":	
+		rendering.Renderer.HTML(w, http.StatusOK, "index", nil)
+		break
+
+	case "/favicon.ico":
+		http.Redirect(w, r, "/assets/favicon.ico", 303)
+		break
+
+	default:
+		rendering.Renderer.Text(w, http.StatusNotFound, "Not Found")
+	}
 }
 
 func serveFiles(w http.ResponseWriter, r *http.Request) {
