@@ -2,7 +2,6 @@
     <div class="flex flex-col items-center w-16 h-screen py-8 space-y-8 bg-white dark:bg-gray-900 dark:border-gray-700">
         <a href="#">
 			{{ IncludeIcon "dollar.svg" }}
-			
         </a>
 
 		{{ range .Pages }}
@@ -22,11 +21,11 @@
 				<button class="flex items-center w-full px-5 py-2 transition-colors duration-200 dark:bg-gray-800 focus:outline-none bg-gray-100">
 				{{ else }}
 				<button 
+					id="menu-{{$i}}"
 					class="flex items-center w-full px-5 py-2 transition-colors duration-200 dark:hover:bg-gray-800 focus:outline-none hover:bg-gray-100"
 					hx-post="/sidebar/menu/select/{{ $i }}"
 					hx-trigger="click"
-					hx-target="#sidebar"
-					hx-swap="outerHTML"
+					hx-swap="multi:#sidebar,#transactions"
 				>
 
 				{{ end }}

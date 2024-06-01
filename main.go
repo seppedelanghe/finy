@@ -38,6 +38,7 @@ func sidebar(w http.ResponseWriter, r *http.Request) {
 	}
 
 	rendering.Renderer.HTML(w, http.StatusOK, "sidebar", sidebar)
+	rendering.Renderer.Text(w, http.StatusOK, "<p id=\"transactions\">Swapped</p>")
 }
 
 
