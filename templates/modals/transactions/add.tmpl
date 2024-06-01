@@ -1,20 +1,25 @@
 <div id="add-product-modal" class="fixed top-0 left-0 w-screen h-screen bg-black/50 m-0 flex justify-center items-center ">
 	<div class="w-1/3 min-h-12 bg-gray-900 text-white p-8 rounded-lg">
-		<form class="flex flex-col gap-2 w-full text-gray-400">
+		<form 
+			class="flex flex-col gap-2 w-full text-gray-400" 
+			hx-post="/comp/modal/transaction/add"
+			hx-swap="outerHTML"
+			hx-target="#transactions"
+		>
 			<div class="w-full">
-				<input id="name" type="text" placeholder="Name" 
+				<input id="name" type="text" placeholder="Name" name="name"
 					class="px-2 py-1 rounded-md outline-black outline-1 w-full" />
 			</div>
 			<div class="w-full">
-				<input id="date" type="date" placeholder="Date" 
+				<input id="date" type="date" placeholder="Date" name="date"
 					class="px-2 py-1 rounded-md outline-black outline-1 w-full" />
 			</div>
 			<div class="w-full">
-				<input id="amount" type="number" placeholder="Amount" 
+				<input id="amount" type="number" step="0.01" placeholder="Amount" name="amount"
 					class="px-2 py-1 rounded-md outline-black outline-1 w-full"/>
 			</div>
 
-			<button class="px-4 py-2 bg-green-800 rounded-md text-white">
+			<button type="submit" class="px-4 py-2 bg-green-800 rounded-md text-white">
 				Add
 			</button>
 		</form>

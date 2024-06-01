@@ -1,45 +1,49 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
+	"strconv"
 
 	"finy.be/api/rendering"
 	"finy.be/api/structs"
-	"finy.be/api/structs/viewmodel"
 )
 
-var transactions = make([]structs.Transaction, 100)
+var transactions []structs.Transaction
 
 
 func GetTransactions(w http.ResponseWriter, r *http.Request) {
-	vm := viewmodel.TransactionsVM {
-		Title: "Transactions",
-		Subtitle: fmt.Sprintf("%d total", len(transactions)),
-		Table: viewmodel.TableVM {
-			Headers: []viewmodel.TableHeaderVM {
-				{ Name: "Name" },
-				{ Name: "Date" },
-				{ Name: "Amount" },
-			},
-			Rows: []viewmodel.TableRow {
-				{ 
-					Data: []viewmodel.TableDataVM {
-						{ Value: "Food", Bold: true },
-						{ Value: "31-05-2024", Bold: false },
-						{ Value: "14,15", Bold: false },
-					},
-				},
-			},
-		},
-	}
-
-	rendering.Renderer.HTML(w, http.StatusOK, "transactions", vm)
+	rendering.TranscationsList(w, &transactions)
 }
 
 
-func ModalAddTransaction(w http.ResponseWriter, r *http.Request) {
-	vm := viewmodel.ModalAddTransactionVM{}
+func AddTransaction(w http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case http.MethodGet:
+		rendering.TransactionsModalAdd(w)
+		break;
+	case http.MethodPost:
+		var transaction structs.Transaction
+		err := r.ParseForm()
+		if err != nil {
+			panic(err)
+		}
+		
+		transaction.Name = r.PostForm.Get("name")
+		amount, err := strconv.ParseFloat(r.PostForm.Get("amount"), 32)
+		if err != nil {
+			panic(err)
+		}
+		transaction.Amount = int(amount * 100)
+		transaction.Date = r.PostForm.Get("date")
 
-	rendering.Renderer.HTML(w, http.StatusOK, "modals/transaction_add", vm)
+		transactions = append(transactions, transaction)
+
+		err = rendering.TranscationsList(w, &transactions)
+		if err != nil {
+			panic(err)
+		}
+		break;
+	default:
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+	}
 }

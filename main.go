@@ -35,7 +35,8 @@ func main() {
 	compRouter.HandleFunc("GET /sidebar", controllers.GetSidebar)
 	compRouter.HandleFunc("POST /sidebar/menu/select/{index}", controllers.PostSidebar)
 	compRouter.HandleFunc("GET /transactions", controllers.GetTransactions)
-	compRouter.HandleFunc("GET /modal/transaction/add", controllers.ModalAddTransaction)
+	compRouter.HandleFunc("GET /modal/transaction/add", controllers.AddTransaction)
+	compRouter.HandleFunc("POST /modal/transaction/add", controllers.AddTransaction)
 
 	// Main router
 	router := http.NewServeMux()
